@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VANTAGE — Automatización e Inteligencia Comercial</title>
-<meta name="description" content="Hacemos que su negocio responda, venda y funcione aunque usted no esté mirando.">
+<title>VANTAGE — Inteligencia Comercial</title>
+<meta name="description" content="Vea qué pasa en su negocio. Desde cualquier lugar. En tiempo real.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -33,1124 +33,1279 @@
     cursor: none;
   }
 
-  /* ── Custom cursor ── */
   #cursor {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
+    position: fixed; width: 8px; height: 8px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
     transform: translate(-50%, -50%);
     transition: transform 0.08s ease;
   }
   #cursor-ring {
-    position: fixed;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(122, 155, 181, 0.45);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid rgba(122,155,181,0.45); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
     transition: all 0.18s ease;
   }
-  a:hover ~ #cursor-ring,
-  button:hover ~ #cursor-ring { transform: translate(-50%, -50%) scale(1.6); }
 
-  /* ── Typography ── */
+  @media (hover: none) { body { cursor: auto; } #cursor, #cursor-ring { display: none; } }
+
   h1, h2, h3 { font-weight: 400; letter-spacing: -0.01em; }
 
-  /* ── Scroll reveal ── */
   .reveal {
-    opacity: 0;
-    transform: translateY(28px);
+    opacity: 0; transform: translateY(28px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
   .reveal-delay-1 { transition-delay: 0.1s; }
   .reveal-delay-2 { transition-delay: 0.22s; }
   .reveal-delay-3 { transition-delay: 0.34s; }
   .reveal-delay-4 { transition-delay: 0.46s; }
 
-  /* ── Navbar ── */
+  /* ── NAV ── */
   nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
     padding: 1.4rem 3rem;
     transition: background 0.4s ease, border-bottom 0.4s ease;
   }
   nav.scrolled {
-    background: rgba(10, 21, 32, 0.92);
+    background: rgba(10,21,32,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--accent-line);
   }
   .nav-logo {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text);
-    text-decoration: none;
+    font-size: 1rem; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text); text-decoration: none;
   }
+  .nav-right {
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+
+  /* Language selector */
+  .lang-selector {
+    position: relative;
+  }
+  .lang-btn {
+    background: transparent; border: 1px solid var(--accent-line);
+    color: var(--text); cursor: pointer; font-family: inherit;
+    font-size: 0.78rem; letter-spacing: 0.1em; padding: 0.4rem 0.8rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: border-color 0.3s, background 0.3s;
+    white-space: nowrap;
+  }
+  .lang-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+  .lang-flag { font-size: 1rem; }
+  .lang-name { font-size: 0.75rem; }
+  .lang-arrow { font-size: 0.6rem; opacity: 0.6; transition: transform 0.3s; }
+  .lang-selector.open .lang-arrow { transform: rotate(180deg); }
+
+  .lang-dropdown {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    background: #0d1e2d; border: 1px solid var(--accent-line);
+    min-width: 145px;
+    display: none; flex-direction: column;
+    z-index: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .lang-selector.open .lang-dropdown { display: flex; }
+  .lang-option {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.9rem; cursor: pointer; font-size: 0.82rem;
+    color: var(--text); transition: background 0.2s;
+    border: none; background: transparent; text-align: left;
+    font-family: inherit;
+  }
+  .lang-option:hover { background: var(--accent-dim); }
+  .lang-option.active { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .lang-name { display: none; }
+    nav { padding: 1.2rem 1.5rem; }
+  }
+
   .nav-cta {
-    font-size: 0.82rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent-line);
-    padding-bottom: 2px;
+    font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid var(--accent-line); padding-bottom: 2px;
     transition: color 0.3s, border-color 0.3s;
   }
   .nav-cta:hover { color: var(--text); border-color: var(--text); }
+  @media (max-width: 600px) { .nav-cta { display: none; } }
 
-  /* ── Section base ── */
+  /* ── SECTIONS ── */
   section { padding: 7rem 0; }
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2.5rem;
-  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
+
   .section-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 0.8rem;
   }
   .section-label::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: var(--accent);
-    opacity: 0.5;
+    content: ''; display: block; width: 40px; height: 1px;
+    background: var(--accent); opacity: 0.5;
   }
 
-  /* ════════════════════════════════
-     1. HERO
-  ════════════════════════════════ */
+  /* ── HERO ── */
   #hero {
-    position: relative;
-    height: 100vh;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 3rem;
-    overflow: hidden;
+    position: relative; height: 100vh; min-height: 600px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 0 3rem; overflow: hidden;
   }
+  #hero-canvas { position: absolute; inset: 0; z-index: 0; }
 
-  #hero-canvas {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 1;
-    max-width: 820px;
-  }
+  .hero-content { position: relative; z-index: 1; max-width: 820px; }
 
   .hero-eyebrow {
-    font-size: 0.72rem;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.8rem;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.3s forwards;
+    font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.8rem;
+    opacity: 0; animation: fadeUp 0.9s ease 0.3s forwards;
   }
-
   .hero-title {
-    font-size: clamp(5rem, 13vw, 11rem);
-    font-weight: 400;
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-    color: var(--text);
+    font-size: clamp(5rem, 13vw, 11rem); font-weight: 400;
+    line-height: 0.92; letter-spacing: -0.03em; color: var(--text);
     margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.5s forwards;
+    opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
   }
-
   .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--accent);
-    letter-spacing: 0.04em;
-    margin-bottom: 2.5rem;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 0.75s forwards;
+    font-size: clamp(1rem, 2vw, 1.25rem); color: var(--accent);
+    letter-spacing: 0.04em; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.9s ease 0.75s forwards;
   }
-
   .hero-tagline {
-    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-    font-style: italic;
-    color: rgba(240, 240, 240, 0.78);
-    max-width: 620px;
-    line-height: 1.5;
-    margin-bottom: 3.5rem;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 1s forwards;
-    min-height: 2.4em;
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem); font-style: italic;
+    color: rgba(240,240,240,0.78); max-width: 620px;
+    line-height: 1.5; margin-bottom: 3.5rem;
+    opacity: 0; animation: fadeUp 0.9s ease 1s forwards; min-height: 2.4em;
   }
 
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s ease 1.2s forwards;
+  }
   .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.82rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text);
-    text-decoration: none;
-    border: 1px solid var(--accent-line);
-    padding: 1rem 2.2rem;
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    border: 1px solid var(--accent-line); padding: 1rem 2.2rem;
     transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
-    opacity: 0;
-    animation: fadeUp 0.9s ease 1.2s forwards;
   }
-  .hero-cta:hover {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-  }
-  .hero-cta-arrow {
-    transition: transform 0.3s ease;
-  }
+  .hero-cta:hover { background: var(--accent-dim); border-color: var(--accent); }
+  .hero-cta-arrow { transition: transform 0.3s ease; }
   .hero-cta:hover .hero-cta-arrow { transform: translateX(5px); }
+  .hero-cta.secondary {
+    border-color: transparent; color: var(--accent);
+    background: transparent; padding-left: 0;
+  }
+  .hero-cta.secondary:hover { color: var(--text); background: transparent; border-color: transparent; }
 
   .hero-scroll-indicator {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 3rem;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(122, 155, 181, 0.5);
-    opacity: 0;
-    animation: fadeUp 0.9s ease 1.5s forwards;
+    position: absolute; bottom: 2.5rem; left: 3rem; z-index: 1;
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(122,155,181,0.5);
+    opacity: 0; animation: fadeUp 0.9s ease 1.5s forwards;
   }
   .scroll-line {
-    width: 30px;
-    height: 1px;
-    background: var(--accent);
-    opacity: 0.4;
-    position: relative;
-    overflow: hidden;
+    width: 30px; height: 1px; background: var(--accent);
+    opacity: 0.4; position: relative; overflow: hidden;
   }
   .scroll-line::after {
-    content: '';
-    position: absolute;
-    left: -100%;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--accent);
+    content: ''; position: absolute; left: -100%; top: 0;
+    width: 100%; height: 100%; background: var(--accent);
     animation: scrollLine 2s ease-in-out infinite;
   }
 
   @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
     from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   @keyframes scrollLine {
     0% { left: -100%; }
     100% { left: 100%; }
   }
 
-  /* ════════════════════════════════
-     2. EL PROBLEMA
-  ════════════════════════════════ */
-  #problema {
-    border-top: 1px solid var(--accent-line);
+  @media (max-width: 767px) {
+    #hero { padding: 0 1.5rem; }
+    .hero-scroll-indicator { left: 1.5rem; }
+    .hero-ctas { flex-direction: column; }
+    .hero-cta.secondary { padding-left: 0; }
   }
 
-  .problema-header {
-    max-width: 700px;
-    margin-bottom: 5rem;
-  }
+  /* ── PROBLEMA ── */
+  #problema { border-top: 1px solid var(--accent-line); }
+
+  .problema-header { max-width: 700px; margin-bottom: 5rem; }
   .problema-header h2 {
-    font-size: clamp(1.7rem, 3.5vw, 2.6rem);
-    line-height: 1.25;
-    font-weight: 400;
+    font-size: clamp(1.7rem, 3.5vw, 2.6rem); line-height: 1.25; font-weight: 400;
   }
 
   .problema-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--accent-line);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--accent-line);
   }
+  @media (max-width: 767px) { .problema-grid { grid-template-columns: 1fr; } }
+  @media (min-width: 768px) and (max-width: 1023px) { .problema-grid { grid-template-columns: repeat(2, 1fr); } }
 
   .problema-card {
-    background: var(--bg);
-    padding: 2.8rem 2.5rem;
-    position: relative;
-    transition: background 0.35s ease;
+    background: var(--bg); padding: 2.8rem 2.5rem;
+    position: relative; transition: background 0.35s ease;
   }
   .problema-card:hover { background: var(--accent-dim); }
-
   .problema-card-num {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    opacity: 0.6;
-    margin-bottom: 1.2rem;
+    font-size: 0.7rem; letter-spacing: 0.2em; color: var(--accent);
+    opacity: 0.6; margin-bottom: 1.2rem;
   }
-
-  .problema-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.9rem;
-    line-height: 1.3;
-  }
-
-  .problema-card p {
-    font-size: 0.96rem;
-    color: rgba(240, 240, 240, 0.65);
-    line-height: 1.65;
-  }
-
+  .problema-card h3 { font-size: 1.25rem; margin-bottom: 0.9rem; line-height: 1.3; }
+  .problema-card p { font-size: 0.96rem; color: rgba(240,240,240,0.65); line-height: 1.65; }
   .problema-card-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--accent);
-    transition: width 0.5s ease;
+    position: absolute; top: 0; left: 0; width: 0; height: 2px;
+    background: var(--accent); transition: width 0.5s ease;
   }
   .problema-card:hover .problema-card-line { width: 100%; }
 
-  /* ════════════════════════════════
-     3. QUÉ HACEMOS
-  ════════════════════════════════ */
-  #que-hacemos {
-    border-top: 1px solid var(--accent-line);
+  /* ── PRODUCTO / DEMO ── */
+  #producto { border-top: 1px solid var(--accent-line); }
+
+  .producto-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+  }
+  @media (max-width: 767px) { .producto-layout { grid-template-columns: 1fr; gap: 3rem; } }
+
+  .producto-left h2 {
+    font-size: clamp(1.6rem, 3.2vw, 2.5rem); margin-bottom: 1.5rem; line-height: 1.2;
+  }
+  .producto-left p {
+    color: rgba(240,240,240,0.62); font-size: 1rem; line-height: 1.7; margin-bottom: 2rem;
   }
 
-  .statement-block {
-    max-width: 780px;
-    margin-bottom: 6rem;
+  .producto-features { display: flex; flex-direction: column; gap: 0; }
+  .producto-feature {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.1rem 0; border-bottom: 1px solid var(--accent-line);
+    transition: padding-left 0.3s ease;
   }
-  .statement-block p {
-    font-size: clamp(1.3rem, 2.8vw, 2rem);
-    line-height: 1.45;
-    font-weight: 400;
+  .producto-feature:first-child { border-top: 1px solid var(--accent-line); }
+  .producto-feature:hover { padding-left: 0.5rem; }
+  .feature-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    flex-shrink: 0; margin-top: 0.55rem; opacity: 0.7;
   }
-  .statement-block em {
-    font-style: italic;
-    color: var(--accent);
+  .producto-feature p { font-size: 0.95rem; color: rgba(240,240,240,0.72); line-height: 1.55; }
+
+  .producto-screen {
+    position: relative; background: #0a1520;
+    border: 1px solid var(--accent-line); padding: 2rem;
+    aspect-ratio: 4/3; overflow: hidden;
+  }
+  .screen-header {
+    display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;
+  }
+  .screen-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); opacity: 0.3;
+  }
+  .screen-title {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); opacity: 0.5;
+  }
+  .screen-kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-bottom: 1rem; }
+  .screen-kpi {
+    background: rgba(122,155,181,0.07); padding: 0.8rem;
+    border: 1px solid rgba(122,155,181,0.1);
+  }
+  .screen-kpi-label { font-size: 0.6rem; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; }
+  .screen-kpi-val { font-size: 1.3rem; font-weight: 500; margin-top: 0.2rem; }
+  .screen-kpi-change { font-size: 0.65rem; color: #5bbfa4; margin-top: 1px; }
+  .screen-bars {
+    display: flex; align-items: flex-end; gap: 4px; height: 60px; margin-top: 0.5rem;
+  }
+  .screen-bar {
+    flex: 1; background: rgba(122,155,181,0.2); position: relative; border-radius: 2px 2px 0 0;
+    animation: barGrow 1.5s ease forwards;
+    transform-origin: bottom;
+  }
+  @keyframes barGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .screen-bar:nth-child(1) { height: 45%; animation-delay: 0.1s; }
+  .screen-bar:nth-child(2) { height: 70%; animation-delay: 0.15s; background: rgba(122,155,181,0.35); }
+  .screen-bar:nth-child(3) { height: 55%; animation-delay: 0.2s; }
+  .screen-bar:nth-child(4) { height: 90%; animation-delay: 0.25s; background: var(--accent); opacity: 0.6; }
+  .screen-bar:nth-child(5) { height: 65%; animation-delay: 0.3s; }
+  .screen-bar:nth-child(6) { height: 80%; animation-delay: 0.35s; background: rgba(122,155,181,0.35); }
+  .screen-bar:nth-child(7) { height: 50%; animation-delay: 0.4s; }
+  .screen-pulse {
+    position: absolute; bottom: 1rem; right: 1rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.6rem; color: #5bbfa4; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #5bbfa4;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
   }
 
-  .proceso-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--accent-line);
-  }
-
-  .proceso-step {
-    padding: 3rem 2.5rem 3rem 0;
-    border-right: 1px solid var(--accent-line);
-    position: relative;
-  }
-  .proceso-step:last-child { border-right: none; padding-right: 0; padding-left: 2.5rem; }
-  .proceso-step:nth-child(2) { padding-left: 2.5rem; }
-
-  .proceso-num {
-    font-size: 5rem;
-    font-weight: 400;
-    line-height: 1;
-    color: var(--accent);
-    opacity: 0.18;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.04em;
-  }
-
-  .proceso-step h3 {
-    font-size: 1.15rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .proceso-step p {
-    font-size: 0.95rem;
-    color: rgba(240, 240, 240, 0.62);
-    line-height: 1.65;
-  }
-
-  /* ════════════════════════════════
-     4. QUOTE CENTRAL
-  ════════════════════════════════ */
+  /* ── QUOTE ── */
   #quote {
     background: var(--bg-alt);
     border-top: 1px solid var(--accent-line);
     border-bottom: 1px solid var(--accent-line);
-    padding: 8rem 0;
-    text-align: center;
+    padding: 8rem 0; text-align: center;
   }
+  .quote-inner { max-width: 780px; margin: 0 auto; padding: 0 2.5rem; }
+  .quote-mark { font-size: 5rem; color: var(--accent); opacity: 0.2; line-height: 1; margin-bottom: 0.5rem; font-family: Georgia, serif; }
+  .quote-text { font-size: clamp(1.3rem, 2.8vw, 1.95rem); font-style: italic; line-height: 1.5; font-weight: 400; margin-bottom: 2.5rem; }
+  .quote-sub { font-size: 0.9rem; color: rgba(240,240,240,0.5); letter-spacing: 0.04em; }
 
-  .quote-inner {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 2.5rem;
-  }
+  /* ── PARA QUIEN ── */
+  #para-quien { border-top: 1px solid var(--accent-line); }
 
-  .quote-mark {
-    font-size: 5rem;
-    color: var(--accent);
-    opacity: 0.2;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-    font-family: Georgia, serif;
-  }
+  .para-quien-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  @media (max-width: 767px) { .para-quien-layout { grid-template-columns: 1fr; gap: 3rem; } }
 
-  .quote-text {
-    font-size: clamp(1.3rem, 2.8vw, 1.95rem);
-    font-style: italic;
-    line-height: 1.5;
-    font-weight: 400;
-    margin-bottom: 2.5rem;
-  }
+  .para-quien-left h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin-bottom: 1.5rem; line-height: 1.25; }
+  .para-quien-left p { color: rgba(240,240,240,0.62); font-size: 0.97rem; line-height: 1.7; }
 
-  .quote-sub {
-    font-size: 0.9rem;
-    color: rgba(240, 240, 240, 0.5);
-    letter-spacing: 0.04em;
-  }
-
-  /* ════════════════════════════════
-     5. SERVICIOS
-  ════════════════════════════════ */
-  #servicios {
-    border-top: 1px solid var(--accent-line);
-  }
-
-  .servicios-header {
-    margin-bottom: 4.5rem;
-  }
-  .servicios-header h2 {
-    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-    margin-bottom: 0.8rem;
-    max-width: 600px;
-  }
-  .servicios-header p {
-    color: rgba(240, 240, 240, 0.55);
-    font-size: 1rem;
-  }
-
-  .servicios-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  .servicio-card {
-    background: var(--bg-card);
-    border: 1px solid var(--accent-line);
-    padding: 2.8rem 2.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.35s ease, background 0.35s ease;
-  }
-  .servicio-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(122,155,181,0.04) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .servicio-card:hover { border-color: var(--accent); background: rgba(122, 155, 181, 0.09); }
-  .servicio-card:hover::before { opacity: 1; }
-
-  .servicio-card-icon {
-    width: 36px;
-    height: 36px;
-    margin-bottom: 1.8rem;
-    opacity: 0.6;
-  }
-
-  .servicio-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.9rem;
-    position: relative;
-  }
-
-  .servicio-card p {
-    font-size: 0.95rem;
-    color: rgba(240, 240, 240, 0.62);
-    line-height: 1.65;
-  }
-
-  .servicio-card-corner {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.8rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .servicio-card:hover .servicio-card-corner { opacity: 1; transform: translateX(0); }
-
-  /* ════════════════════════════════
-     6. PARA QUÉ TIPO
-  ════════════════════════════════ */
-  #para-quien {
-    border-top: 1px solid var(--accent-line);
-  }
-
-  .para-quien-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: start;
-  }
-
-  .para-quien-left h2 {
-    font-size: clamp(1.6rem, 3vw, 2.3rem);
-    margin-bottom: 1.5rem;
-    line-height: 1.25;
-  }
-  .para-quien-left p {
-    color: rgba(240, 240, 240, 0.62);
-    font-size: 0.97rem;
-    line-height: 1.7;
-  }
-
-  .para-quien-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
+  .para-quien-items { display: flex; flex-direction: column; gap: 0; }
   .para-quien-item {
-    display: flex;
-    gap: 1.4rem;
-    align-items: flex-start;
-    padding: 1.8rem 0;
-    border-bottom: 1px solid var(--accent-line);
+    display: flex; gap: 1.4rem; align-items: flex-start;
+    padding: 1.8rem 0; border-bottom: 1px solid var(--accent-line);
     transition: padding-left 0.3s ease;
   }
   .para-quien-item:first-child { border-top: 1px solid var(--accent-line); }
   .para-quien-item:hover { padding-left: 0.5rem; }
+  .para-quien-icon { flex-shrink: 0; margin-top: 0.2rem; color: var(--accent); opacity: 0.7; }
+  .para-quien-item p { font-size: 0.97rem; color: rgba(240,240,240,0.72); line-height: 1.6; }
 
-  .para-quien-icon {
-    flex-shrink: 0;
-    margin-top: 0.2rem;
-    color: var(--accent);
-    opacity: 0.7;
+  /* ── PLANES ── */
+  #planes { border-top: 1px solid var(--accent-line); }
+
+  .planes-header { margin-bottom: 4.5rem; }
+  .planes-header h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); margin-bottom: 0.8rem; max-width: 600px; }
+  .planes-header p { color: rgba(240,240,240,0.55); font-size: 1rem; }
+
+  .planes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 767px) { .planes-grid { grid-template-columns: 1fr; } }
+  @media (min-width: 768px) and (max-width: 1023px) { .planes-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .plan-card {
+    background: var(--bg-card); border: 1px solid var(--accent-line);
+    padding: 2.8rem 2.5rem; position: relative; overflow: hidden;
+    transition: border-color 0.35s ease, background 0.35s ease;
+    display: flex; flex-direction: column;
   }
-
-  .para-quien-item p {
-    font-size: 0.97rem;
-    color: rgba(240, 240, 240, 0.72);
-    line-height: 1.6;
+  .plan-card.featured { border-color: var(--accent); background: rgba(122,155,181,0.1); }
+  .plan-card:hover { border-color: var(--accent); background: rgba(122,155,181,0.09); }
+  .plan-badge {
+    position: absolute; top: 1.2rem; right: 1.5rem;
+    font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid var(--accent-line);
+    padding: 0.2rem 0.6rem;
   }
+  .plan-name { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+  .plan-title { font-size: 1.4rem; margin-bottom: 1rem; line-height: 1.2; }
+  .plan-desc { font-size: 0.93rem; color: rgba(240,240,240,0.6); line-height: 1.65; margin-bottom: 1.8rem; flex: 1; }
+  .plan-features { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+  .plan-feature {
+    display: flex; align-items: flex-start; gap: 0.65rem;
+    font-size: 0.9rem; color: rgba(240,240,240,0.72);
+  }
+  .plan-feature::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0; margin-top: 0.55rem; opacity: 0.6;
+  }
+  .plan-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text); text-decoration: none;
+    border: 1px solid var(--accent-line); padding: 0.8rem 1.5rem;
+    transition: background 0.3s, border-color 0.3s;
+    align-self: flex-start;
+  }
+  .plan-cta:hover { background: var(--accent-dim); border-color: var(--accent); }
+  .plan-cta.featured-cta { border-color: var(--accent); color: var(--accent); }
 
-  /* ════════════════════════════════
-     7. CÓMO TRABAJAMOS
-  ════════════════════════════════ */
+  /* ── COMO ── */
   #como-trabajamos {
     background: var(--bg-alt);
     border-top: 1px solid var(--accent-line);
     border-bottom: 1px solid var(--accent-line);
   }
 
-  .como-header {
-    max-width: 680px;
-    margin-bottom: 4rem;
-  }
-  .como-header h2 {
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
-    margin-bottom: 1.2rem;
-    line-height: 1.3;
-  }
-  .como-header p {
-    color: rgba(240, 240, 240, 0.58);
-    font-size: 0.97rem;
-    line-height: 1.7;
-  }
+  .como-header { max-width: 680px; margin-bottom: 4rem; }
+  .como-header h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 1.2rem; line-height: 1.3; }
+  .como-header p { color: rgba(240,240,240,0.58); font-size: 0.97rem; line-height: 1.7; }
 
-  .como-items {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--accent-line);
-  }
+  .como-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--accent-line); }
+  @media (max-width: 767px) { .como-items { grid-template-columns: 1fr; } }
 
   .como-item {
-    padding: 2.5rem 2.5rem 2.5rem 0;
-    border-right: 1px solid var(--accent-line);
+    padding: 2.5rem 2.5rem 2.5rem 0; border-right: 1px solid var(--accent-line);
   }
   .como-item:last-child { border-right: none; padding-right: 0; padding-left: 2.5rem; }
   .como-item:nth-child(2) { padding-left: 2.5rem; }
-
-  .como-item-title {
-    font-size: 1rem;
-    margin-bottom: 0.6rem;
-    color: var(--text);
+  @media (max-width: 767px) {
+    .como-item { border-right: none; border-bottom: 1px solid var(--accent-line); padding: 1.8rem 0 !important; }
+    .como-item:last-child { border-bottom: none; }
   }
+
+  .como-item-title { font-size: 1rem; margin-bottom: 0.6rem; color: var(--text); }
   .como-item-dash {
-    display: inline-block;
-    width: 18px;
-    height: 1px;
-    background: var(--accent);
-    margin-right: 0.6rem;
-    vertical-align: middle;
-    opacity: 0.6;
+    display: inline-block; width: 18px; height: 1px; background: var(--accent);
+    margin-right: 0.6rem; vertical-align: middle; opacity: 0.6;
   }
-  .como-item p {
-    font-size: 0.93rem;
-    color: rgba(240, 240, 240, 0.55);
-    line-height: 1.65;
-  }
+  .como-item p { font-size: 0.93rem; color: rgba(240,240,240,0.55); line-height: 1.65; }
 
-  /* ════════════════════════════════
-     8. CONTACTO
-  ════════════════════════════════ */
-  #contacto {
-    padding: 9rem 0;
-  }
+  /* ── CONTACTO ── */
+  #contacto { padding: 9rem 0; }
 
-  .contacto-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: start;
-  }
+  .contacto-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  @media (max-width: 767px) { .contacto-layout { grid-template-columns: 1fr; gap: 3rem; } }
 
   .contacto-left h2 {
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
+    font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 400; line-height: 1;
+    letter-spacing: -0.03em; margin-bottom: 1.5rem;
   }
-  .contacto-left p {
-    font-size: 1rem;
-    color: rgba(240, 240, 240, 0.6);
-    line-height: 1.7;
-    max-width: 380px;
-  }
+  .contacto-left p { font-size: 1rem; color: rgba(240,240,240,0.6); line-height: 1.7; max-width: 380px; }
 
-  .contacto-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding-top: 1rem;
-  }
+  .contacto-channels { display: flex; flex-direction: column; gap: 0; padding-top: 1rem; }
 
-  .contacto-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.6rem 0;
-    border-bottom: 1px solid var(--accent-line);
-    text-decoration: none;
-    color: var(--text);
+  .contacto-channel {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.6rem 0; border-bottom: 1px solid var(--accent-line);
+    text-decoration: none; color: var(--text);
     transition: padding-right 0.3s ease;
-    group: true;
   }
-  .contacto-link:first-child { border-top: 1px solid var(--accent-line); }
-  .contacto-link:hover { padding-right: 0.4rem; }
+  .contacto-channel:first-child { border-top: 1px solid var(--accent-line); }
+  .contacto-channel:hover { padding-right: 0.4rem; }
 
-  .contacto-link-left { display: flex; flex-direction: column; gap: 0.2rem; }
+  .channel-left { display: flex; align-items: center; gap: 1rem; }
+  .channel-icon {
+    width: 36px; height: 36px; border: 1px solid var(--accent-line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 1rem; transition: border-color 0.3s, background 0.3s;
+  }
+  .contacto-channel:hover .channel-icon { border-color: var(--accent); background: var(--accent-dim); }
+  .channel-info { display: flex; flex-direction: column; gap: 0.15rem; }
+  .channel-platform { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); opacity: 0.7; }
+  .channel-value { font-size: 1rem; }
+  .channel-arrow { color: var(--accent); opacity: 0.5; font-size: 1.2rem; transition: opacity 0.3s, transform 0.3s; }
+  .contacto-channel:hover .channel-arrow { opacity: 1; transform: translate(4px, -4px); }
 
-  .contacto-link-platform {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.7;
-  }
-  .contacto-link-value {
-    font-size: 1.05rem;
-  }
-  .contacto-link-arrow {
-    color: var(--accent);
-    opacity: 0.5;
-    font-size: 1.2rem;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .contacto-link:hover .contacto-link-arrow { opacity: 1; transform: translate(4px, -4px); }
-
-  /* ════════════════════════════════
-     FOOTER
-  ════════════════════════════════ */
+  /* ── FOOTER ── */
   footer {
-    border-top: 1px solid var(--accent-line);
-    padding: 2.5rem 0;
+    border-top: 1px solid var(--accent-line); padding: 2.5rem 0;
   }
-
   .footer-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
+    max-width: 1100px; margin: 0 auto; padding: 0 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
   }
-
-  .footer-logo {
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.7;
-  }
-
-  .footer-copy {
-    font-size: 0.78rem;
-    color: rgba(240, 240, 240, 0.35);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    body { font-size: 17px; }
-    #hero { padding: 0 1.5rem; }
-    nav { padding: 1.2rem 1.5rem; }
-    .container { padding: 0 1.5rem; }
-    section { padding: 5rem 0; }
-
-    .problema-grid { grid-template-columns: 1fr; }
-    .proceso-grid { grid-template-columns: 1fr; }
-    .proceso-step { border-right: none; border-bottom: 1px solid var(--accent-line); padding: 2rem 0; }
-    .proceso-step:last-child { padding-left: 0; }
-    .proceso-step:nth-child(2) { padding-left: 0; }
-
-    .servicios-grid { grid-template-columns: 1fr; }
-    .para-quien-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .como-items { grid-template-columns: 1fr; }
-    .como-item { border-right: none; border-bottom: 1px solid var(--accent-line); padding: 2rem 0; }
-    .como-item:last-child { padding-left: 0; }
-    .como-item:nth-child(2) { padding-left: 0; }
-
-    .contacto-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .hero-scroll-indicator { left: 1.5rem; }
-    .footer-inner { flex-direction: column; gap: 0.8rem; text-align: center; }
-    #cursor, #cursor-ring { display: none; }
-    body { cursor: auto; }
-  }
+  @media (max-width: 600px) { .footer-inner { flex-direction: column; gap: 0.8rem; text-align: center; } }
+  .footer-brand { font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(240,240,240,0.4); }
+  .footer-copy { font-size: 0.8rem; color: rgba(240,240,240,0.3); }
 </style>
 </head>
 <body>
-
-<!-- Custom cursor -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- Navbar -->
+<!-- ── NAV ── -->
 <nav id="navbar">
-  <a href="#hero" class="nav-logo">VANTAGE</a>
-  <a href="#contacto" class="nav-cta">Contactanos</a>
+  <a href="#" class="nav-logo">VANTAGE</a>
+  <div class="nav-right">
+    <div class="lang-selector" id="langSelector">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang(event)">
+        <span class="lang-flag" id="langFlag">🇪🇸</span>
+        <span class="lang-name" id="langNameDisplay" data-i18n="lang_name">Español</span>
+        <span class="lang-arrow">▼</span>
+      </button>
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option active" data-lang="es" onclick="setLang('es')">🇪🇸 &nbsp;Español</button>
+        <button class="lang-option" data-lang="de" onclick="setLang('de')">🇩🇪 &nbsp;Deutsch</button>
+        <button class="lang-option" data-lang="en" onclick="setLang('en')">🇬🇧 &nbsp;English</button>
+        <button class="lang-option" data-lang="pt" onclick="setLang('pt')">🇧🇷 &nbsp;Português</button>
+      </div>
+    </div>
+    <a href="#contacto" class="nav-cta" data-i18n="nav_cta">Consultar →</a>
+  </div>
 </nav>
 
-<!-- ══════════ 1. HERO ══════════ -->
+<!-- ── HERO ── -->
 <section id="hero">
   <canvas id="hero-canvas"></canvas>
-
   <div class="hero-content">
-    <p class="hero-eyebrow">Automatización · Inteligencia Comercial</p>
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">Inteligencia Comercial</p>
     <h1 class="hero-title">VANTAGE</h1>
-    <p class="hero-subtitle">Automatización e Inteligencia Comercial</p>
-    <p class="hero-tagline" id="typewriter"></p>
-    <a href="#contacto" class="hero-cta">
-      Contactanos
-      <span class="hero-cta-arrow">→</span>
-    </a>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">Datos que trabajan para usted</p>
+    <p class="hero-tagline" data-i18n="hero_tagline">Vea qué pasa en su negocio. Desde cualquier lugar. En tiempo real.</p>
+    <div class="hero-ctas">
+      <a href="https://wa.me/491515910214?text=Hola%20VANTAGE%2C%20me%20gustar%C3%ADa%20ver%20c%C3%B3mo%20quedar%C3%ADa%20mi%20negocio%20en%20el%20panel%20de%20inteligencia%20comercial." class="hero-cta" target="_blank" rel="noopener">
+        <span data-i18n="hero_cta_primary">Consultar por WhatsApp</span>
+        <span class="hero-cta-arrow">→</span>
+      </a>
+      <a href="https://martibalducci.github.io/vantage-demo/?cliente=cafeteria-demo&token=demo2026" class="hero-cta secondary" target="_blank" rel="noopener">
+        <span data-i18n="hero_cta_demo">Ver demo en vivo →</span>
+      </a>
+    </div>
   </div>
-
   <div class="hero-scroll-indicator">
     <div class="scroll-line"></div>
-    Descubra más
+    <span data-i18n="scroll">Scroll</span>
   </div>
 </section>
 
-<!-- ══════════ 2. EL PROBLEMA ══════════ -->
+<!-- ── PROBLEMA ── -->
 <section id="problema">
   <div class="container">
     <div class="problema-header reveal">
-      <p class="section-label">El problema</p>
-      <h2>Usted trabaja muchas horas. Pero hay tareas que le roban tiempo sin generar valor.</h2>
+      <p class="section-label" data-i18n="problema_label">El problema</p>
+      <h2 data-i18n="problema_h2">Usted trabaja muchas horas. Pero no sabe con exactitud qué le funciona y qué le cuesta dinero.</h2>
     </div>
-
     <div class="problema-grid">
-      <div class="problema-card reveal reveal-delay-1">
+      <div class="problema-card reveal">
         <div class="problema-card-line"></div>
         <p class="problema-card-num">01</p>
-        <h3>Responde los mismos mensajes todos los días</h3>
-        <p>Su equipo dedica horas a responder preguntas que siempre son las mismas. Ese tiempo no vuelve.</p>
+        <h3 data-i18n="p1_title">Sin datos, las decisiones llegan tarde</h3>
+        <p data-i18n="p1_desc">Su negocio genera información todos los días. Sin una forma simple de verla, esa información se pierde y las decisiones se toman de memoria.</p>
+      </div>
+      <div class="problema-card reveal reveal-delay-1">
+        <div class="problema-card-line"></div>
+        <p class="problema-card-num">02</p>
+        <h3 data-i18n="p2_title">Las planillas no alcanzan</h3>
+        <p data-i18n="p2_desc">Abrir Excel, cruzar datos, actualizar fórmulas. Eso lleva tiempo que no tiene y da resultados que ya son viejos cuando los mira.</p>
       </div>
       <div class="problema-card reveal reveal-delay-2">
         <div class="problema-card-line"></div>
-        <p class="problema-card-num">02</p>
-        <h3>No sabe qué pasa en su negocio cuando no está</h3>
-        <p>Sin información actualizada, las decisiones llegan tarde.</p>
-      </div>
-      <div class="problema-card reveal reveal-delay-3">
-        <div class="problema-card-line"></div>
         <p class="problema-card-num">03</p>
-        <h3>Sus redes dependen de que alguien tenga tiempo</h3>
-        <p>El contenido se publica cuando se puede, no cuando conviene.</p>
-      </div>
-      <div class="problema-card reveal reveal-delay-4">
-        <div class="problema-card-line"></div>
-        <p class="problema-card-num">04</p>
-        <h3>Cada consulta requiere atención manual</h3>
-        <p>Si nadie responde rápido, el cliente llama a otro.</p>
+        <h3 data-i18n="p3_title">No sabe dónde se va el margen</h3>
+        <p data-i18n="p3_desc">Los productos que más venden no siempre son los que más dejan. Los horarios con más movimiento no siempre son los más rentables.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 3. QUÉ HACEMOS ══════════ -->
-<section id="que-hacemos">
+<!-- ── PRODUCTO ── -->
+<section id="producto">
   <div class="container">
-    <p class="section-label reveal">Qué hacemos</p>
-
-    <div class="statement-block reveal">
-      <p>VANTAGE analiza su negocio, detecta dónde se pierde tiempo y dinero, y lo resuelve. <em>Usted no necesita saber de tecnología.</em> Nosotros hacemos el trabajo.</p>
-    </div>
-
-    <div class="proceso-grid">
-      <div class="proceso-step reveal reveal-delay-1">
-        <div class="proceso-num">01</div>
-        <h3>Analizamos su negocio</h3>
-        <p>Antes de la primera reunión revisamos su operación completa. Usted no prepara nada.</p>
+    <div class="producto-layout">
+      <div class="producto-left reveal">
+        <p class="section-label" data-i18n="producto_label">El producto</p>
+        <h2 data-i18n="producto_h2">Un panel con los números de su negocio, siempre actualizado</h2>
+        <p data-i18n="producto_desc">VANTAGE conecta los datos de su sistema de cobro y los convierte en un panel que abre desde el celular o la computadora. Sin planillas. Sin fórmulas. Sin necesidad de saber de tecnología.</p>
+        <div class="producto-features">
+          <div class="producto-feature">
+            <div class="feature-dot"></div>
+            <p data-i18n="feat_1">Ventas del día, la semana y el mes — siempre al día</p>
+          </div>
+          <div class="producto-feature">
+            <div class="feature-dot"></div>
+            <p data-i18n="feat_2">Productos más rentables y tendencias de venta</p>
+          </div>
+          <div class="producto-feature">
+            <div class="feature-dot"></div>
+            <p data-i18n="feat_3">Horarios con más y menos actividad</p>
+          </div>
+          <div class="producto-feature">
+            <div class="feature-dot"></div>
+            <p data-i18n="feat_4">Distribución de métodos de pago</p>
+          </div>
+          <div class="producto-feature">
+            <div class="feature-dot"></div>
+            <p data-i18n="feat_5">Alertas automáticas cuando algo cambia</p>
+          </div>
+        </div>
       </div>
-      <div class="proceso-step reveal reveal-delay-2">
-        <div class="proceso-num">02</div>
-        <h3>Le mostramos qué se puede mejorar</h3>
-        <p>30 minutos. Sin compromiso. Le explicamos qué encontramos.</p>
-      </div>
-      <div class="proceso-step reveal reveal-delay-3">
-        <div class="proceso-num">03</div>
-        <h3>Lo implementamos y acompañamos</h3>
-        <p>Nos encargamos de todo. Usted recibe el resultado funcionando.</p>
+      <div class="reveal reveal-delay-1">
+        <div class="producto-screen">
+          <div class="screen-header">
+            <div class="screen-dot"></div>
+            <div class="screen-dot" style="opacity:0.2"></div>
+            <div class="screen-dot" style="opacity:0.1"></div>
+            <span class="screen-title">Dashboard · VANTAGE</span>
+          </div>
+          <div class="screen-kpis">
+            <div class="screen-kpi">
+              <div class="screen-kpi-label" data-i18n="kpi_facturacion">Facturación hoy</div>
+              <div class="screen-kpi-val">€ 1.284</div>
+              <div class="screen-kpi-change">↑ 12% vs ayer</div>
+            </div>
+            <div class="screen-kpi">
+              <div class="screen-kpi-label" data-i18n="kpi_ops">Operaciones</div>
+              <div class="screen-kpi-val">47</div>
+              <div class="screen-kpi-change">↑ 8% vs ayer</div>
+            </div>
+            <div class="screen-kpi">
+              <div class="screen-kpi-label" data-i18n="kpi_ticket">Ticket promedio</div>
+              <div class="screen-kpi-val">€ 27,3</div>
+              <div class="screen-kpi-change">↑ 3% vs ayer</div>
+            </div>
+            <div class="screen-kpi">
+              <div class="screen-kpi-label" data-i18n="kpi_margen">Margen neto</div>
+              <div class="screen-kpi-val">62%</div>
+              <div class="screen-kpi-change" style="color: #d4a84b">= igual mes ant.</div>
+            </div>
+          </div>
+          <div class="screen-bars">
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+            <div class="screen-bar"></div>
+          </div>
+          <div class="screen-pulse">
+            <div class="pulse-dot"></div>
+            <span data-i18n="live">En vivo</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 4. QUOTE CENTRAL ══════════ -->
+<!-- ── QUOTE ── -->
 <section id="quote">
-  <div class="quote-inner">
-    <div class="quote-mark reveal">"</div>
-    <p class="quote-text reveal reveal-delay-1">
-      Su negocio puede responder consultas, gestionar pedidos y mostrar sus números en tiempo real. Sin que usted tenga que estar presente.
-    </p>
-    <p class="quote-sub reveal reveal-delay-2">No entregamos tecnología. Entregamos resultados que se ven en el día a día.</p>
+  <div class="quote-inner reveal">
+    <div class="quote-mark">"</div>
+    <p class="quote-text" data-i18n="quote_text">El dueño de un negocio exitoso no tiene más tiempo que los demás. Tiene mejor información.</p>
+    <p class="quote-sub" data-i18n="quote_sub">— Principio VANTAGE</p>
   </div>
 </section>
 
-<!-- ══════════ 5. SERVICIOS ══════════ -->
-<section id="servicios">
-  <div class="container">
-    <div class="servicios-header reveal">
-      <p class="section-label">Servicios</p>
-      <h2>Algunos de los problemas que resolvemos</h2>
-      <p>Cada negocio es distinto. Estos son los más frecuentes.</p>
-    </div>
-
-    <div class="servicios-grid">
-      <div class="servicio-card reveal reveal-delay-1">
-        <svg class="servicio-card-icon" viewBox="0 0 36 36" fill="none" stroke="#7a9bb5" stroke-width="1.2">
-          <circle cx="18" cy="18" r="14"/>
-          <path d="M12 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
-          <line x1="18" y1="24" x2="18" y2="24.01"/>
-          <path d="M8 28l4-4"/>
-        </svg>
-        <h3>Atención automática las 24 horas</h3>
-        <p>Un sistema responde las consultas de sus clientes por WhatsApp e Instagram a cualquier hora. Sin demoras. Sin que nadie tenga que estar pendiente.</p>
-        <span class="servicio-card-corner">Ver más →</span>
-      </div>
-
-      <div class="servicio-card reveal reveal-delay-2">
-        <svg class="servicio-card-icon" viewBox="0 0 36 36" fill="none" stroke="#7a9bb5" stroke-width="1.2">
-          <rect x="5" y="8" width="26" height="18" rx="1"/>
-          <line x1="5" y1="14" x2="31" y2="14"/>
-          <line x1="12" y1="8" x2="12" y2="14"/>
-          <line x1="18" y1="20" x2="18" y2="24"/>
-          <line x1="13" y1="22" x2="23" y2="22"/>
-        </svg>
-        <h3>Sus números, siempre visibles</h3>
-        <p>Un panel simple que abre desde cualquier dispositivo. Ve qué vendió hoy, qué funciona y qué no. Sin planillas ni esperas.</p>
-        <span class="servicio-card-corner">Ver más →</span>
-      </div>
-
-      <div class="servicio-card reveal reveal-delay-3">
-        <svg class="servicio-card-icon" viewBox="0 0 36 36" fill="none" stroke="#7a9bb5" stroke-width="1.2">
-          <rect x="6" y="6" width="24" height="20" rx="1"/>
-          <line x1="11" y1="12" x2="25" y2="12"/>
-          <line x1="11" y1="17" x2="20" y2="17"/>
-          <line x1="11" y1="22" x2="16" y2="22"/>
-          <circle cx="27" cy="27" r="5"/>
-          <line x1="27" y1="25" x2="27" y2="29"/>
-          <line x1="25" y1="27" x2="29" y2="27"/>
-        </svg>
-        <h3>Reservas sin intervención manual</h3>
-        <p>Las consultas entran solas, se registran y el cliente recibe confirmación automática. Menos tiempo perdido, menos oportunidades que se escapan.</p>
-        <span class="servicio-card-corner">Ver más →</span>
-      </div>
-
-      <div class="servicio-card reveal reveal-delay-4">
-        <svg class="servicio-card-icon" viewBox="0 0 36 36" fill="none" stroke="#7a9bb5" stroke-width="1.2">
-          <circle cx="18" cy="12" r="6"/>
-          <path d="M6 30c0-6.6 5.4-12 12-12s12 5.4 12 12"/>
-          <line x1="24" y1="8" x2="30" y2="5"/>
-          <line x1="25" y1="14" x2="31" y2="15"/>
-        </svg>
-        <h3>Presencia digital activa</h3>
-        <p>Una página web profesional y contenido para redes generado automáticamente. Su negocio se ve activo aunque usted esté ocupado.</p>
-        <span class="servicio-card-corner">Ver más →</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ 6. PARA QUIÉN ══════════ -->
+<!-- ── PARA QUIEN ── -->
 <section id="para-quien">
   <div class="container">
     <div class="para-quien-layout">
       <div class="para-quien-left reveal">
-        <p class="section-label">Para quién</p>
-        <h2>¿Es esto para su empresa?</h2>
-        <p>Trabajamos con pequeñas y medianas empresas que tienen procesos repetitivos, atención al cliente activa y quieren crecer sin contratar más personal.</p>
+        <p class="section-label" data-i18n="paraquien_label">Para quién</p>
+        <h2 data-i18n="paraquien_h2">Trabajamos con negocios que quieren tomar mejores decisiones</h2>
+        <p data-i18n="paraquien_desc">No hace falta ser una empresa grande. Hace falta querer entender los propios números y actuar en consecuencia.</p>
       </div>
-
-      <div class="para-quien-items">
-        <div class="para-quien-item reveal reveal-delay-1">
-          <svg class="para-quien-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.1">
-            <polyline points="3,9 7,13 15,5"/>
-          </svg>
-          <p>Negocios con atención al público que reciben consultas todos los días</p>
+      <div class="para-quien-items reveal reveal-delay-1">
+        <div class="para-quien-item">
+          <div class="para-quien-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <p data-i18n="pq1">Restaurantes, bares y cafeterías con ventas diarias que no tienen visibilidad de sus números</p>
         </div>
-        <div class="para-quien-item reveal reveal-delay-2">
-          <svg class="para-quien-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.1">
-            <polyline points="3,9 7,13 15,5"/>
-          </svg>
-          <p>Empresas que venden pero no tienen visibilidad de sus números en tiempo real</p>
+        <div class="para-quien-item">
+          <div class="para-quien-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <p data-i18n="pq2">Dueños que toman decisiones de memoria porque aún no tienen los datos organizados</p>
         </div>
-        <div class="para-quien-item reveal reveal-delay-3">
-          <svg class="para-quien-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.1">
-            <polyline points="3,9 7,13 15,5"/>
-          </svg>
-          <p>Negocios con presencia en redes que no tienen tiempo de mantenerlas</p>
+        <div class="para-quien-item">
+          <div class="para-quien-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <p data-i18n="pq3">Negocios que crecen y necesitan saber exactamente qué está funcionando y qué no</p>
+        </div>
+        <div class="para-quien-item">
+          <div class="para-quien-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <p data-i18n="pq4">Empresas con más de un local que necesitan ver todo desde un mismo lugar</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 7. CÓMO TRABAJAMOS ══════════ -->
+<!-- ── PLANES ── -->
+<section id="planes">
+  <div class="container">
+    <div class="planes-header reveal">
+      <p class="section-label" data-i18n="planes_label">Planes</p>
+      <h2 data-i18n="planes_h2">Empezamos simple. Crecemos juntos.</h2>
+      <p data-i18n="planes_desc">Sin permanencia mínima. Si en 90 días no hay resultado visible, devolvemos la inversión.</p>
+    </div>
+    <div class="planes-grid">
+      <div class="plan-card reveal">
+        <p class="plan-name" data-i18n="plan1_name">Diagnóstico</p>
+        <h3 class="plan-title" data-i18n="plan1_title">Análisis de arranque</h3>
+        <p class="plan-desc" data-i18n="plan1_desc">Analizamos sus datos de ventas y le entregamos un informe en PDF con los hallazgos clave de su negocio.</p>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="plan1_f1">Análisis de ventas históricas</div>
+          <div class="plan-feature" data-i18n="plan1_f2">Productos más y menos rentables</div>
+          <div class="plan-feature" data-i18n="plan1_f3">Informe PDF · entrega en 7 días</div>
+          <div class="plan-feature" data-i18n="plan1_f4">Sesión de presentación incluida</div>
+        </div>
+        <a href="mailto:proyectos.vantage@gmail.com?subject=Consulta%20Diagn%C3%B3stico%20VANTAGE&body=Hola%2C%20me%20interesa%20el%20plan%20de%20diagn%C3%B3stico." class="plan-cta" data-i18n="plan_cta">Consultar →</a>
+      </div>
+      <div class="plan-card featured reveal reveal-delay-1">
+        <div class="plan-badge" data-i18n="plan2_badge">Más elegido</div>
+        <p class="plan-name" data-i18n="plan2_name">Gestión mensual</p>
+        <h3 class="plan-title" data-i18n="plan2_title">Panel en tiempo real</h3>
+        <p class="plan-desc" data-i18n="plan2_desc">Su negocio conectado a un panel privado que se actualiza en tiempo real. Más un informe mensual con observaciones y recomendaciones.</p>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="plan2_f1">Panel dashboard privado 24/7</div>
+          <div class="plan-feature" data-i18n="plan2_f2">Acceso desde celular y computadora</div>
+          <div class="plan-feature" data-i18n="plan2_f3">Informe mensual con análisis</div>
+          <div class="plan-feature" data-i18n="plan2_f4">Alertas automáticas incluidas</div>
+          <div class="plan-feature" data-i18n="plan2_f5">Soporte continuo</div>
+        </div>
+        <a href="https://wa.me/491515910214?text=Hola%20VANTAGE%2C%20me%20interesa%20el%20plan%20de%20gesti%C3%B3n%20mensual%20con%20panel%20en%20tiempo%20real." class="plan-cta featured-cta" target="_blank" rel="noopener" data-i18n="plan_cta_wa">Consultar por WhatsApp →</a>
+      </div>
+      <div class="plan-card reveal reveal-delay-2">
+        <p class="plan-name" data-i18n="plan3_name">Socio estratégico</p>
+        <h3 class="plan-title" data-i18n="plan3_title">Inteligencia completa + IA</h3>
+        <p class="plan-desc" data-i18n="plan3_desc">Todo lo anterior más análisis de rentabilidad por producto, sesión estratégica mensual e implementación de automatizaciones con IA.</p>
+        <div class="plan-features">
+          <div class="plan-feature" data-i18n="plan3_f1">Panel dashboard avanzado</div>
+          <div class="plan-feature" data-i18n="plan3_f2">Análisis de rentabilidad por producto</div>
+          <div class="plan-feature" data-i18n="plan3_f3">Sesión estratégica mensual</div>
+          <div class="plan-feature" data-i18n="plan3_f4">Automatizaciones con IA incluidas</div>
+          <div class="plan-feature" data-i18n="plan3_f5">Prioridad de soporte</div>
+        </div>
+        <a href="https://wa.me/491515910214?text=Hola%20VANTAGE%2C%20me%20interesa%20el%20plan%20de%20socio%20estrat%C3%A9gico." class="plan-cta" target="_blank" rel="noopener" data-i18n="plan_cta_wa">Consultar por WhatsApp →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMO TRABAJAMOS ── -->
 <section id="como-trabajamos">
   <div class="container">
     <div class="como-header reveal">
-      <p class="section-label">Nuestra forma</p>
-      <h2>Trabajamos solo donde vemos una oportunidad real.</h2>
-      <p>Antes de proponer cualquier cosa, analizamos su negocio. Si no encontramos algo concreto que mejorar, se lo decimos en la primera reunión.</p>
+      <p class="section-label" data-i18n="como_label">Nuestra forma</p>
+      <h2 data-i18n="como_h2">Sin compromiso inicial. Con seguimiento real.</h2>
+      <p data-i18n="como_desc">La primera conversación es gratuita. Le mostramos en 10 minutos cómo quedaría su negocio en el panel.</p>
     </div>
-
     <div class="como-items">
+      <div class="como-item reveal">
+        <p class="como-item-title"><span class="como-item-dash"></span><span data-i18n="como1_title">Sin tecnicismos</span></p>
+        <p data-i18n="como1_desc">Le explicamos todo en términos simples. No necesita saber de tecnología para entender sus propios números.</p>
+      </div>
       <div class="como-item reveal reveal-delay-1">
-        <p class="como-item-title"><span class="como-item-dash"></span>Sin compromiso inicial</p>
-        <p>La primera conversación es gratuita.</p>
+        <p class="como-item-title"><span class="como-item-dash"></span><span data-i18n="como2_title">Configuración única</span></p>
+        <p data-i18n="como2_desc">Una sola configuración inicial. Después todo funciona solo. Usted abre el panel y ve sus datos, sin hacer nada extra.</p>
       </div>
       <div class="como-item reveal reveal-delay-2">
-        <p class="como-item-title"><span class="como-item-dash"></span>Sin tecnicismos</p>
-        <p>Le explicamos todo en términos simples.</p>
-      </div>
-      <div class="como-item reveal reveal-delay-3">
-        <p class="como-item-title"><span class="como-item-dash"></span>Con seguimiento mensual</p>
-        <p>Acompañamos el resultado mes a mes.</p>
+        <p class="como-item-title"><span class="como-item-dash"></span><span data-i18n="como3_title">Acompañamiento mensual</span></p>
+        <p data-i18n="como3_desc">No desaparecemos después de la entrega. Revisamos los resultados con usted cada mes y ajustamos lo que sea necesario.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 8. CONTACTO ══════════ -->
+<!-- ── CONTACTO ── -->
 <section id="contacto">
   <div class="container">
     <div class="contacto-layout">
       <div class="contacto-left reveal">
-        <p class="section-label">Contacto</p>
-        <h2>Hablemos.</h2>
-        <p>Cuéntenos sobre su negocio. En 30 minutos le mostramos qué encontramos y qué se puede hacer.</p>
+        <h2 data-i18n="contacto_h2">Hablemos.</h2>
+        <p data-i18n="contacto_desc">Cuéntenos sobre su negocio. En 10 minutos le mostramos cómo quedaría su panel y qué se puede hacer.</p>
       </div>
-
-      <div class="contacto-links">
-        <a href="https://wa.me/4915159102148" class="contacto-link reveal reveal-delay-1" target="_blank" rel="noopener">
-          <div class="contacto-link-left">
-            <span class="contacto-link-platform">WhatsApp</span>
-            <span class="contacto-link-value">+49 151 591 02148</span>
+      <div class="contacto-channels reveal reveal-delay-1">
+        <a href="https://wa.me/491515910214?text=Hola%20VANTAGE%2C%20me%20gustar%C3%ADa%20ver%20c%C3%B3mo%20quedar%C3%ADa%20mi%20negocio%20en%20el%20panel%20de%20inteligencia%20comercial." class="contacto-channel" target="_blank" rel="noopener">
+          <div class="channel-left">
+            <div class="channel-icon">💬</div>
+            <div class="channel-info">
+              <span class="channel-platform">WhatsApp</span>
+              <span class="channel-value">+49 151 591 02148</span>
+            </div>
           </div>
-          <span class="contacto-link-arrow">↗</span>
+          <span class="channel-arrow">↗</span>
         </a>
-
-        <a href="mailto:proyectos.vantage@gmail.com" class="contacto-link reveal reveal-delay-2">
-          <div class="contacto-link-left">
-            <span class="contacto-link-platform">Email</span>
-            <span class="contacto-link-value">proyectos.vantage@gmail.com</span>
+        <a href="mailto:proyectos.vantage@gmail.com?subject=Consulta%20VANTAGE%20%E2%80%94%20Inteligencia%20Comercial&body=Hola%2C%20me%20gustar%C3%ADa%20saber%20m%C3%A1s%20sobre%20el%20panel%20de%20inteligencia%20comercial%20de%20VANTAGE.%0A%0ANegocio%3A%20%5Btipo%20de%20negocio%5D%0ACiudad%3A%20%5Bciudad%5D%0A%0AQuedar%C3%ADa%20en%20contacto." class="contacto-channel">
+          <div class="channel-left">
+            <div class="channel-icon">✉</div>
+            <div class="channel-info">
+              <span class="channel-platform">Email</span>
+              <span class="channel-value">proyectos.vantage@gmail.com</span>
+            </div>
           </div>
-          <span class="contacto-link-arrow">↗</span>
+          <span class="channel-arrow">↗</span>
         </a>
-
-        <a href="https://instagram.com/vantage.analytics" class="contacto-link reveal reveal-delay-3" target="_blank" rel="noopener">
-          <div class="contacto-link-left">
-            <span class="contacto-link-platform">Instagram</span>
-            <span class="contacto-link-value">@vantage.analytics</span>
+        <a href="https://instagram.com/vantage.analytics" class="contacto-channel" target="_blank" rel="noopener">
+          <div class="channel-left">
+            <div class="channel-icon">📸</div>
+            <div class="channel-info">
+              <span class="channel-platform">Instagram</span>
+              <span class="channel-value">@vantage.analytics</span>
+            </div>
           </div>
-          <span class="contacto-link-arrow">↗</span>
+          <span class="channel-arrow">↗</span>
+        </a>
+        <a href="https://martibalducci.github.io/vantage-demo/?cliente=cafeteria-demo&token=demo2026" class="contacto-channel" target="_blank" rel="noopener">
+          <div class="channel-left">
+            <div class="channel-icon">📊</div>
+            <div class="channel-info">
+              <span class="channel-platform" data-i18n="demo_label">Demo en vivo</span>
+              <span class="channel-value" data-i18n="demo_value">Ver cómo funciona el panel</span>
+            </div>
+          </div>
+          <span class="channel-arrow">↗</span>
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
-    <span class="footer-logo">VANTAGE — Automatización e Inteligencia Artificial</span>
-    <span class="footer-copy">© 2026 VANTAGE. Todos los derechos reservados.</span>
+    <span class="footer-brand">VANTAGE — <span data-i18n="footer_brand">Inteligencia Comercial</span></span>
+    <span class="footer-copy">© 2026</span>
   </div>
 </footer>
 
 <script>
+/* ── CURSOR ── */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+if (cur && ring) {
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+    ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.6)'; });
+    el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  });
+}
+
+/* ── NAV SCROLL ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── HERO CANVAS ── */
 (function() {
-  // ── Custom cursor
-  var cur = document.getElementById('cursor');
-  var ring = document.getElementById('cursor-ring');
-  var mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', function(e) {
-    mx = e.clientX; my = e.clientY;
-    cur.style.left = mx + 'px';
-    cur.style.top = my + 'px';
-  });
-  function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  }
-  animRing();
-
-  document.querySelectorAll('a, button').forEach(function(el) {
-    el.addEventListener('mouseenter', function() {
-      cur.style.transform = 'translate(-50%,-50%) scale(2)';
-      ring.style.opacity = '0.3';
-    });
-    el.addEventListener('mouseleave', function() {
-      cur.style.transform = 'translate(-50%,-50%) scale(1)';
-      ring.style.opacity = '1';
-    });
-  });
-
-  // ── Navbar scroll
-  var navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', function() {
-    if (window.scrollY > 60) navbar.classList.add('scrolled');
-    else navbar.classList.remove('scrolled');
-  }, { passive: true });
-
-  // ── Hero canvas — animated dot grid
-  var canvas = document.getElementById('hero-canvas');
-  var ctx = canvas.getContext('2d');
-  var W, H, dots = [], mouse = { x: -999, y: -999 };
-  var COLS, ROWS, SPACING = 48;
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes, raf;
+  const ACCENT = [122, 155, 181];
 
   function resize() {
     W = canvas.width = canvas.offsetWidth;
     H = canvas.height = canvas.offsetHeight;
-    COLS = Math.ceil(W / SPACING) + 2;
-    ROWS = Math.ceil(H / SPACING) + 2;
-    dots = [];
-    for (var r = 0; r < ROWS; r++) {
-      for (var c = 0; c < COLS; c++) {
-        dots.push({ x: c * SPACING, y: r * SPACING, base: 0.12 + Math.random() * 0.08, cur: 0 });
-      }
-    }
+    initNodes();
   }
 
-  canvas.addEventListener('mousemove', function(e) {
-    var rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
+  function initNodes() {
+    nodes = Array.from({length: 55}, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.5 + 0.5
+    }));
+  }
 
-  var t = 0;
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    t += 0.006;
-    for (var i = 0; i < dots.length; i++) {
-      var d = dots[i];
-      var dx = d.x - mouse.x, dy = d.y - mouse.y;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      var pulse = Math.sin(t + d.x * 0.012 + d.y * 0.012) * 0.06;
-      var hover = dist < 100 ? (1 - dist / 100) * 0.55 : 0;
-      var alpha = d.base + pulse + hover;
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0) n.x = W; if (n.x > W) n.x = 0;
+      if (n.y < 0) n.y = H; if (n.y > H) n.y = 0;
+      for (let j = i + 1; j < nodes.length; j++) {
+        const m = nodes[j];
+        const dx = n.x - m.x, dy = n.y - m.y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${ACCENT},${(1 - d/150) * 0.12})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+        }
+      }
       ctx.beginPath();
-      ctx.arc(d.x, d.y, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(122,155,181,' + Math.min(alpha, 0.8) + ')';
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${ACCENT},0.35)`;
       ctx.fill();
     }
-    requestAnimationFrame(draw);
+    raf = requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', resize, { passive: true });
-  resize();
-  draw();
-
-  // ── Typewriter
-  var text = 'Hacemos que su negocio responda, venda y funcione aunque usted no esté mirando.';
-  var el = document.getElementById('typewriter');
-  var idx = 0;
-  function type() {
-    if (idx <= text.length) {
-      el.textContent = text.slice(0, idx);
-      idx++;
-      setTimeout(type, idx < 3 ? 600 : 28);
-    }
-  }
-  setTimeout(type, 1600);
-
-  // ── Scroll reveal
-  var reveals = document.querySelectorAll('.reveal');
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-  reveals.forEach(function(el) { observer.observe(el); });
+  window.addEventListener('resize', resize);
+  resize(); draw();
 })();
+
+/* ── i18n ── */
+const i18n = {
+  es: {
+    lang_name: 'Español',
+    nav_cta: 'Consultar →',
+    hero_eyebrow: 'Inteligencia Comercial',
+    hero_subtitle: 'Datos que trabajan para usted',
+    hero_tagline: 'Vea qué pasa en su negocio. Desde cualquier lugar. En tiempo real.',
+    hero_cta_primary: 'Consultar por WhatsApp',
+    hero_cta_demo: 'Ver demo en vivo →',
+    scroll: 'Scroll',
+    problema_label: 'El problema',
+    problema_h2: 'Usted trabaja muchas horas. Pero no sabe con exactitud qué le funciona y qué le cuesta dinero.',
+    p1_title: 'Sin datos, las decisiones llegan tarde',
+    p1_desc: 'Su negocio genera información todos los días. Sin una forma simple de verla, esa información se pierde y las decisiones se toman de memoria.',
+    p2_title: 'Las planillas no alcanzan',
+    p2_desc: 'Abrir Excel, cruzar datos, actualizar fórmulas. Eso lleva tiempo que no tiene y da resultados que ya son viejos cuando los mira.',
+    p3_title: 'No sabe dónde se va el margen',
+    p3_desc: 'Los productos que más venden no siempre son los que más dejan. Los horarios con más movimiento no siempre son los más rentables.',
+    producto_label: 'El producto',
+    producto_h2: 'Un panel con los números de su negocio, siempre actualizado',
+    producto_desc: 'VANTAGE conecta los datos de su sistema de cobro y los convierte en un panel que abre desde el celular o la computadora. Sin planillas. Sin fórmulas. Sin necesidad de saber de tecnología.',
+    feat_1: 'Ventas del día, la semana y el mes — siempre al día',
+    feat_2: 'Productos más rentables y tendencias de venta',
+    feat_3: 'Horarios con más y menos actividad',
+    feat_4: 'Distribución de métodos de pago',
+    feat_5: 'Alertas automáticas cuando algo cambia',
+    kpi_facturacion: 'Facturación hoy',
+    kpi_ops: 'Operaciones',
+    kpi_ticket: 'Ticket promedio',
+    kpi_margen: 'Margen neto',
+    live: 'En vivo',
+    quote_text: 'El dueño de un negocio exitoso no tiene más tiempo que los demás. Tiene mejor información.',
+    quote_sub: '— Principio VANTAGE',
+    paraquien_label: 'Para quién',
+    paraquien_h2: 'Trabajamos con negocios que quieren tomar mejores decisiones',
+    paraquien_desc: 'No hace falta ser una empresa grande. Hace falta querer entender los propios números y actuar en consecuencia.',
+    pq1: 'Restaurantes, bares y cafeterías con ventas diarias que no tienen visibilidad de sus números',
+    pq2: 'Dueños que toman decisiones de memoria porque aún no tienen los datos organizados',
+    pq3: 'Negocios que crecen y necesitan saber exactamente qué está funcionando y qué no',
+    pq4: 'Empresas con más de un local que necesitan ver todo desde un mismo lugar',
+    planes_label: 'Planes',
+    planes_h2: 'Empezamos simple. Crecemos juntos.',
+    planes_desc: 'Sin permanencia mínima. Si en 90 días no hay resultado visible, devolvemos la inversión.',
+    plan1_name: 'Diagnóstico',
+    plan1_title: 'Análisis de arranque',
+    plan1_desc: 'Analizamos sus datos de ventas y le entregamos un informe en PDF con los hallazgos clave de su negocio.',
+    plan1_f1: 'Análisis de ventas históricas',
+    plan1_f2: 'Productos más y menos rentables',
+    plan1_f3: 'Informe PDF · entrega en 7 días',
+    plan1_f4: 'Sesión de presentación incluida',
+    plan2_name: 'Gestión mensual',
+    plan2_badge: 'Más elegido',
+    plan2_title: 'Panel en tiempo real',
+    plan2_desc: 'Su negocio conectado a un panel privado que se actualiza en tiempo real. Más un informe mensual con observaciones y recomendaciones.',
+    plan2_f1: 'Panel dashboard privado 24/7',
+    plan2_f2: 'Acceso desde celular y computadora',
+    plan2_f3: 'Informe mensual con análisis',
+    plan2_f4: 'Alertas automáticas incluidas',
+    plan2_f5: 'Soporte continuo',
+    plan3_name: 'Socio estratégico',
+    plan3_title: 'Inteligencia completa + IA',
+    plan3_desc: 'Todo lo anterior más análisis de rentabilidad por producto, sesión estratégica mensual e implementación de automatizaciones con IA.',
+    plan3_f1: 'Panel dashboard avanzado',
+    plan3_f2: 'Análisis de rentabilidad por producto',
+    plan3_f3: 'Sesión estratégica mensual',
+    plan3_f4: 'Automatizaciones con IA incluidas',
+    plan3_f5: 'Prioridad de soporte',
+    plan_cta: 'Consultar →',
+    plan_cta_wa: 'Consultar por WhatsApp →',
+    como_label: 'Nuestra forma',
+    como_h2: 'Sin compromiso inicial. Con seguimiento real.',
+    como_desc: 'La primera conversación es gratuita. Le mostramos en 10 minutos cómo quedaría su negocio en el panel.',
+    como1_title: 'Sin tecnicismos',
+    como1_desc: 'Le explicamos todo en términos simples. No necesita saber de tecnología para entender sus propios números.',
+    como2_title: 'Configuración única',
+    como2_desc: 'Una sola configuración inicial. Después todo funciona solo. Usted abre el panel y ve sus datos, sin hacer nada extra.',
+    como3_title: 'Acompañamiento mensual',
+    como3_desc: 'No desaparecemos después de la entrega. Revisamos los resultados con usted cada mes y ajustamos lo que sea necesario.',
+    contacto_h2: 'Hablemos.',
+    contacto_desc: 'Cuéntenos sobre su negocio. En 10 minutos le mostramos cómo quedaría su panel y qué se puede hacer.',
+    demo_label: 'Demo en vivo',
+    demo_value: 'Ver cómo funciona el panel',
+    footer_brand: 'Inteligencia Comercial'
+  },
+  de: {
+    lang_name: 'Deutsch',
+    nav_cta: 'Anfragen →',
+    hero_eyebrow: 'Kaufmännische Intelligenz',
+    hero_subtitle: 'Daten, die für Sie arbeiten',
+    hero_tagline: 'Sehen Sie, was in Ihrem Unternehmen passiert. Von überall. In Echtzeit.',
+    hero_cta_primary: 'Per WhatsApp anfragen',
+    hero_cta_demo: 'Live-Demo ansehen →',
+    scroll: 'Scrollen',
+    problema_label: 'Das Problem',
+    problema_h2: 'Sie arbeiten viele Stunden. Aber Sie wissen nicht genau, was funktioniert und was Geld kostet.',
+    p1_title: 'Ohne Daten kommen Entscheidungen zu spät',
+    p1_desc: 'Ihr Unternehmen erzeugt täglich Informationen. Ohne eine einfache Möglichkeit, diese zu sehen, gehen diese Informationen verloren.',
+    p2_title: 'Tabellen reichen nicht aus',
+    p2_desc: 'Excel öffnen, Daten verknüpfen, Formeln aktualisieren. Das kostet Zeit, die Sie nicht haben, und liefert veraltete Ergebnisse.',
+    p3_title: 'Sie wissen nicht, wo die Marge bleibt',
+    p3_desc: 'Die meistverkauften Produkte sind nicht immer die rentabelsten. Die geschäftigsten Zeiten sind nicht immer die profitabelsten.',
+    produto_label: 'Das Produkt',
+    produto_h2: 'Ein Dashboard mit Ihren Geschäftszahlen, immer aktuell',
+    produto_desc: 'VANTAGE verbindet Ihre Kassendaten und verwandelt sie in ein Dashboard, das Sie vom Handy oder Computer aus öffnen können. Ohne Tabellen. Ohne Formeln.',
+    feat_1: 'Umsatz von heute, dieser Woche und diesem Monat',
+    feat_2: 'Profitabelste Produkte und Verkaufstrends',
+    feat_3: 'Zeiten mit mehr und weniger Aktivität',
+    feat_4: 'Verteilung der Zahlungsmethoden',
+    feat_5: 'Automatische Warnungen bei Änderungen',
+    kpi_facturacion: 'Umsatz heute',
+    kpi_ops: 'Vorgänge',
+    kpi_ticket: 'Durchschnittsbon',
+    kpi_margen: 'Nettomarge',
+    live: 'Live',
+    quote_text: 'Ein erfolgreicher Unternehmer hat nicht mehr Zeit als andere. Er hat bessere Informationen.',
+    quote_sub: '— VANTAGE Grundsatz',
+    paraquien_label: 'Für wen',
+    paraquien_h2: 'Wir arbeiten mit Unternehmen, die bessere Entscheidungen treffen wollen',
+    paraquien_desc: 'Man muss kein großes Unternehmen sein. Man muss nur die eigenen Zahlen verstehen und entsprechend handeln wollen.',
+    pq1: 'Restaurants, Bars und Cafés mit täglichen Umsätzen ohne Einblick in ihre Zahlen',
+    pq2: 'Eigentümer, die Entscheidungen aus dem Gedächtnis treffen, weil sie keine organisierten Daten haben',
+    pq3: 'Unternehmen, die wachsen und wissen müssen, was genau funktioniert',
+    pq4: 'Unternehmen mit mehreren Standorten, die alles von einem Ort aus sehen möchten',
+    planes_label: 'Pakete',
+    planes_h2: 'Wir starten einfach. Wachsen gemeinsam.',
+    planes_desc: 'Keine Mindestlaufzeit. Wenn in 90 Tagen kein sichtbares Ergebnis erzielt wird, erstatten wir die Investition.',
+    plan1_name: 'Diagnose',
+    plan1_title: 'Startanalyse',
+    plan1_desc: 'Wir analysieren Ihre Verkaufsdaten und liefern einen PDF-Bericht mit den wichtigsten Erkenntnissen.',
+    plan1_f1: 'Analyse historischer Verkäufe',
+    plan1_f2: 'Profitabelste und unrentabelste Produkte',
+    plan1_f3: 'PDF-Bericht · Lieferung in 7 Tagen',
+    plan1_f4: 'Präsentationssitzung inklusive',
+    plan2_name: 'Monatliche Verwaltung',
+    plan2_badge: 'Am beliebtesten',
+    plan2_title: 'Echtzeit-Dashboard',
+    plan2_desc: 'Ihr Unternehmen mit einem privaten Dashboard verbunden, das sich in Echtzeit aktualisiert, plus monatlicher Bericht.',
+    plan2_f1: 'Privates Dashboard 24/7',
+    plan2_f2: 'Zugang per Handy und Computer',
+    plan2_f3: 'Monatlicher Bericht mit Analyse',
+    plan2_f4: 'Automatische Warnungen inklusive',
+    plan2_f5: 'Kontinuierlicher Support',
+    plan3_name: 'Strategischer Partner',
+    plan3_title: 'Volle Intelligenz + KI',
+    plan3_desc: 'Alles oben genannte plus Rentabilitätsanalyse pro Produkt, monatliche Strategiesitzung und KI-Automatisierungen.',
+    plan3_f1: 'Erweitertes Dashboard',
+    plan3_f2: 'Rentabilitätsanalyse pro Produkt',
+    plan3_f3: 'Monatliche Strategiesitzung',
+    plan3_f4: 'KI-Automatisierungen inklusive',
+    plan3_f5: 'Prioritäts-Support',
+    plan_cta: 'Anfragen →',
+    plan_cta_wa: 'Per WhatsApp anfragen →',
+    como_label: 'Unsere Arbeitsweise',
+    como_h2: 'Ohne Vorabverpflichtung. Mit echtem Follow-up.',
+    como_desc: 'Das erste Gespräch ist kostenlos. Wir zeigen Ihnen in 10 Minuten, wie Ihr Dashboard aussehen würde.',
+    como1_title: 'Ohne Fachjargon',
+    como1_desc: 'Wir erklären alles in einfachen Worten. Sie müssen kein Techniker sein, um Ihre eigenen Zahlen zu verstehen.',
+    como2_title: 'Einmalige Einrichtung',
+    como2_desc: 'Eine einmalige Einrichtung. Danach läuft alles von allein. Sie öffnen das Dashboard und sehen Ihre Daten.',
+    como3_title: 'Monatliche Begleitung',
+    como3_desc: 'Wir verschwinden nicht nach der Lieferung. Wir überprüfen die Ergebnisse gemeinsam jeden Monat.',
+    contacto_h2: 'Sprechen wir.',
+    contacto_desc: 'Erzählen Sie uns von Ihrem Unternehmen. In 10 Minuten zeigen wir Ihnen, wie Ihr Dashboard aussehen würde.',
+    demo_label: 'Live-Demo',
+    demo_value: 'Dashboard in Aktion sehen',
+    footer_brand: 'Kaufmännische Intelligenz'
+  },
+  en: {
+    lang_name: 'English',
+    nav_cta: 'Get in touch →',
+    hero_eyebrow: 'Commercial Intelligence',
+    hero_subtitle: 'Data that works for you',
+    hero_tagline: 'See what is happening in your business. From anywhere. In real time.',
+    hero_cta_primary: 'Contact via WhatsApp',
+    hero_cta_demo: 'See live demo →',
+    scroll: 'Scroll',
+    problema_label: 'The problem',
+    problema_h2: 'You work long hours. But you don\'t know exactly what is working and what is costing you money.',
+    p1_title: 'Without data, decisions come too late',
+    p1_desc: 'Your business generates information every day. Without a simple way to see it, that information is lost and decisions are made from memory.',
+    p2_title: 'Spreadsheets are not enough',
+    p2_desc: 'Opening Excel, cross-referencing data, updating formulas. It takes time you don\'t have and gives results that are already outdated.',
+    p3_title: 'You don\'t know where the margin goes',
+    p3_desc: 'The best-selling products are not always the most profitable. The busiest times are not always the most profitable.',
+    produto_label: 'The product',
+    produto_h2: 'A dashboard with your business numbers, always up to date',
+    produto_desc: 'VANTAGE connects your sales data and turns it into a dashboard you open from your phone or computer. No spreadsheets. No formulas. No tech knowledge needed.',
+    feat_1: 'Sales for today, this week and this month — always current',
+    feat_2: 'Most profitable products and sales trends',
+    feat_3: 'Times with most and least activity',
+    feat_4: 'Payment method distribution',
+    feat_5: 'Automatic alerts when something changes',
+    kpi_facturacion: 'Revenue today',
+    kpi_ops: 'Transactions',
+    kpi_ticket: 'Average ticket',
+    kpi_margen: 'Net margin',
+    live: 'Live',
+    quote_text: 'A successful business owner doesn\'t have more time than others. They have better information.',
+    quote_sub: '— VANTAGE Principle',
+    paraquien_label: 'Who it\'s for',
+    paraquien_h2: 'We work with businesses that want to make better decisions',
+    paraquien_desc: 'You don\'t need to be a large company. You just need to want to understand your own numbers and act accordingly.',
+    pq1: 'Restaurants, bars and cafes with daily sales who lack visibility into their numbers',
+    pq2: 'Owners who make decisions from memory because they don\'t have organized data',
+    pq3: 'Businesses that are growing and need to know exactly what is working',
+    pq4: 'Companies with multiple locations that need to see everything from one place',
+    planes_label: 'Plans',
+    planes_h2: 'We start simple. We grow together.',
+    planes_desc: 'No minimum commitment. If there\'s no visible result in 90 days, we return the investment.',
+    plan1_name: 'Diagnostic',
+    plan1_title: 'Startup analysis',
+    plan1_desc: 'We analyze your sales data and deliver a PDF report with the key findings of your business.',
+    plan1_f1: 'Historical sales analysis',
+    plan1_f2: 'Most and least profitable products',
+    plan1_f3: 'PDF report · delivery in 7 days',
+    plan1_f4: 'Presentation session included',
+    plan2_name: 'Monthly management',
+    plan2_badge: 'Most popular',
+    plan2_title: 'Real-time dashboard',
+    plan2_desc: 'Your business connected to a private dashboard that updates in real time, plus a monthly report with observations.',
+    plan2_f1: 'Private dashboard 24/7',
+    plan2_f2: 'Access from phone and computer',
+    plan2_f3: 'Monthly report with analysis',
+    plan2_f4: 'Automatic alerts included',
+    plan2_f5: 'Continuous support',
+    plan3_name: 'Strategic partner',
+    plan3_title: 'Full intelligence + AI',
+    plan3_desc: 'All of the above plus profitability analysis by product, monthly strategy session and AI automations.',
+    plan3_f1: 'Advanced dashboard',
+    plan3_f2: 'Profitability analysis by product',
+    plan3_f3: 'Monthly strategy session',
+    plan3_f4: 'AI automations included',
+    plan3_f5: 'Priority support',
+    plan_cta: 'Contact →',
+    plan_cta_wa: 'Contact via WhatsApp →',
+    como_label: 'Our approach',
+    como_h2: 'No upfront commitment. Real follow-up.',
+    como_desc: 'The first conversation is free. We show you in 10 minutes what your dashboard would look like.',
+    como1_title: 'No jargon',
+    como1_desc: 'We explain everything in simple terms. You don\'t need to be technical to understand your own numbers.',
+    como2_title: 'One-time setup',
+    como2_desc: 'A single initial setup. After that, everything runs on its own. You open the dashboard and see your data.',
+    como3_title: 'Monthly follow-up',
+    como3_desc: 'We don\'t disappear after delivery. We review results with you every month and adjust as needed.',
+    contacto_h2: 'Let\'s talk.',
+    contacto_desc: 'Tell us about your business. In 10 minutes we\'ll show you what your dashboard could look like.',
+    demo_label: 'Live demo',
+    demo_value: 'See how the dashboard works',
+    footer_brand: 'Commercial Intelligence'
+  },
+  pt: {
+    lang_name: 'Português',
+    nav_cta: 'Consultar →',
+    hero_eyebrow: 'Inteligência Comercial',
+    hero_subtitle: 'Dados que trabalham para você',
+    hero_tagline: 'Veja o que acontece no seu negócio. De qualquer lugar. Em tempo real.',
+    hero_cta_primary: 'Consultar pelo WhatsApp',
+    hero_cta_demo: 'Ver demo ao vivo →',
+    scroll: 'Role',
+    problema_label: 'O problema',
+    problema_h2: 'Você trabalha muitas horas. Mas não sabe exatamente o que funciona e o que custa dinheiro.',
+    p1_title: 'Sem dados, as decisões chegam tarde',
+    p1_desc: 'Seu negócio gera informações todos os dias. Sem uma forma simples de visualizá-las, essas informações se perdem.',
+    p2_title: 'As planilhas não bastam',
+    p2_desc: 'Abrir Excel, cruzar dados, atualizar fórmulas. Isso consome tempo que você não tem e dá resultados que já estão desatualizados.',
+    p3_title: 'Você não sabe para onde vai a margem',
+    p3_desc: 'Os produtos mais vendidos nem sempre são os mais rentáveis. Os horários de maior movimento nem sempre são os mais lucrativos.',
+    produto_label: 'O produto',
+    produto_h2: 'Um painel com os números do seu negócio, sempre atualizado',
+    produto_desc: 'A VANTAGE conecta os dados do seu sistema de cobrança e os transforma em um painel que você abre pelo celular ou computador. Sem planilhas. Sem fórmulas.',
+    feat_1: 'Vendas do dia, da semana e do mês — sempre atualizadas',
+    feat_2: 'Produtos mais rentáveis e tendências de vendas',
+    feat_3: 'Horários com mais e menos atividade',
+    feat_4: 'Distribuição de métodos de pagamento',
+    feat_5: 'Alertas automáticos quando algo muda',
+    kpi_facturacion: 'Faturamento hoje',
+    kpi_ops: 'Operações',
+    kpi_ticket: 'Ticket médio',
+    kpi_margen: 'Margem líquida',
+    live: 'Ao vivo',
+    quote_text: 'O dono de um negócio bem-sucedido não tem mais tempo que os outros. Ele tem melhor informação.',
+    quote_sub: '— Princípio VANTAGE',
+    paraquien_label: 'Para quem',
+    paraquien_h2: 'Trabalhamos com negócios que querem tomar melhores decisões',
+    paraquien_desc: 'Não é preciso ser uma grande empresa. É preciso querer entender os próprios números e agir com base neles.',
+    pq1: 'Restaurantes, bares e cafés com vendas diárias que não têm visibilidade dos seus números',
+    pq2: 'Donos que tomam decisões de memória porque ainda não têm dados organizados',
+    pq3: 'Negócios que crescem e precisam saber exatamente o que está funcionando',
+    pq4: 'Empresas com mais de um local que precisam ver tudo de um mesmo lugar',
+    planes_label: 'Planos',
+    planes_h2: 'Começamos simples. Crescemos juntos.',
+    planes_desc: 'Sem comprometimento mínimo. Se em 90 dias não houver resultado visível, devolvemos o investimento.',
+    plan1_name: 'Diagnóstico',
+    plan1_title: 'Análise inicial',
+    plan1_desc: 'Analisamos seus dados de vendas e entregamos um relatório em PDF com os principais achados do seu negócio.',
+    plan1_f1: 'Análise de vendas históricas',
+    plan1_f2: 'Produtos mais e menos rentáveis',
+    plan1_f3: 'Relatório PDF · entrega em 7 dias',
+    plan1_f4: 'Sessão de apresentação incluída',
+    plan2_name: 'Gestão mensal',
+    plan2_badge: 'Mais escolhido',
+    plan2_title: 'Painel em tempo real',
+    plan2_desc: 'Seu negócio conectado a um painel privado que se atualiza em tempo real, mais um relatório mensal com observações.',
+    plan2_f1: 'Painel dashboard privado 24/7',
+    plan2_f2: 'Acesso pelo celular e computador',
+    plan2_f3: 'Relatório mensal com análise',
+    plan2_f4: 'Alertas automáticos incluídos',
+    plan2_f5: 'Suporte contínuo',
+    plan3_name: 'Parceiro estratégico',
+    plan3_title: 'Inteligência completa + IA',
+    plan3_desc: 'Tudo o que foi mencionado mais análise de rentabilidade por produto, sessão estratégica mensal e automações com IA.',
+    plan3_f1: 'Painel dashboard avançado',
+    plan3_f2: 'Análise de rentabilidade por produto',
+    plan3_f3: 'Sessão estratégica mensal',
+    plan3_f4: 'Automações com IA incluídas',
+    plan3_f5: 'Suporte prioritário',
+    plan_cta: 'Consultar →',
+    plan_cta_wa: 'Consultar pelo WhatsApp →',
+    como_label: 'Nossa abordagem',
+    como_h2: 'Sem compromisso inicial. Com acompanhamento real.',
+    como_desc: 'A primeira conversa é gratuita. Mostramos em 10 minutos como ficaria seu painel.',
+    como1_title: 'Sem tecnicismos',
+    como1_desc: 'Explicamos tudo em termos simples. Você não precisa entender de tecnologia para compreender seus próprios números.',
+    como2_title: 'Configuração única',
+    como2_desc: 'Uma única configuração inicial. Depois tudo funciona sozinho. Você abre o painel e vê seus dados.',
+    como3_title: 'Acompanhamento mensal',
+    como3_desc: 'Não desaparecemos após a entrega. Revisamos os resultados com você todo mês e ajustamos o que for necessário.',
+    contacto_h2: 'Vamos conversar.',
+    contacto_desc: 'Conte-nos sobre seu negócio. Em 10 minutos mostramos como ficaria seu painel.',
+    demo_label: 'Demo ao vivo',
+    demo_value: 'Ver como o painel funciona',
+    footer_brand: 'Inteligência Comercial'
+  }
+};
+
+const langFlags = { es: '🇪🇸', de: '🇩🇪', en: '🇬🇧', pt: '🇧🇷' };
+
+function applyLang(lang) {
+  const t = i18n[lang];
+  if (!t) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.documentElement.setAttribute('lang', lang);
+  document.getElementById('langFlag').textContent = langFlags[lang];
+  document.getElementById('langNameDisplay').textContent = t.lang_name;
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.lang === lang);
+  });
+  localStorage.setItem('vantage_lang', lang);
+}
+
+function setLang(lang) {
+  applyLang(lang);
+  document.getElementById('langSelector').classList.remove('open');
+}
+
+function toggleLang(e) {
+  e.stopPropagation();
+  document.getElementById('langSelector').classList.toggle('open');
+}
+
+document.addEventListener('click', () => {
+  document.getElementById('langSelector').classList.remove('open');
+});
+
+// Init language
+const savedLang = localStorage.getItem('vantage_lang') || 'es';
+applyLang(savedLang);
 </script>
 </body>
 </html>
